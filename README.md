@@ -29,7 +29,7 @@ dependencies {
     implementation 'com.applovin.mediation:google-adapter:20.6.0.3'
 
     // Unity-Ads-to-MAX adapter
-    implementation 'com.applovin.mediation:unityads-adapter:4.0.1.0'
+    implementation 'com.applovin.mediation:unityads-adapter:4.0.1.1'
 
     // Android Advertising ID (AAID)
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
