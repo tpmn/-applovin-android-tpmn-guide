@@ -26,7 +26,7 @@ dependencies {
     implementation 'com.applovin:applovin-sdk:11.3.1'
 
     // AdMob-to-MAX adapter
-    implementation 'com.applovin.mediation:google-adapter:20.6.0.1'
+    implementation 'com.applovin.mediation:google-adapter:20.6.0.3'
 
     // Unity-Ads-to-MAX adapter
     implementation 'com.applovin.mediation:unityads-adapter:4.0.1.0'
