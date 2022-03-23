@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     // AppLovin MAX SDK
-    implementation 'com.applovin:applovin-sdk:11.2.1'
+    implementation 'com.applovin:applovin-sdk:11.3.1'
 
     // AdMob-to-MAX adapter
     implementation 'com.applovin.mediation:google-adapter:20.6.0.1'
