@@ -19,6 +19,7 @@ AppLovin MAX SDK와 [AdMob 어댑터](https://github.com/AppLovin/AppLovin-MAX-S
 repositories {
     google()
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -35,7 +36,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
 
     // PointBerry Event Tracker
-    implementation 'io.pointberry:pointberry-event-tracker:1.0.1'
+    implementation 'com.github.connect-n:pointberry-event-tracker-android:1.0.2'
 }
 ```
 
@@ -162,6 +163,9 @@ public class BannerAdActivity extends Activity implements MaxAdViewAdListener {
 
         // 광고 노출을 로깅하세요.
         impTracker.logImpression("YOUR_POINTBERRY_INVENTORY_ID");
+
+        // 개발 환경에서는 development 파라미터에 true를 전달해서 로그 메시지를 출력하세요.
+        // impTracker.logImpression("YOUR_POINTBERRY_INVENTORY_ID", true);
     }
 
     @Override
@@ -268,6 +272,9 @@ public class InterstitialAdActivity extends Activity implements MaxAdListener {
 
         // 광고 노출을 로깅하세요.
         impTracker.logImpression("YOUR_POINTBERRY_INVENTORY_ID");
+
+        // 개발 환경에서는 development 파라미터에 true를 전달해서 로그 메시지를 출력하세요.
+        // impTracker.logImpression("YOUR_POINTBERRY_INVENTORY_ID", true);
     }
 
     @Override
@@ -384,6 +391,9 @@ public class RewardedAdActivity extends Activity implements MaxRewardedAdListene
 
         // 광고 노출을 로깅하세요.
         impTracker.logImpression("YOUR_POINTBERRY_INVENTORY_ID");
+
+        // 개발 환경에서는 development 파라미터에 true를 전달해서 로그 메시지를 출력하세요.
+        // impTracker.logImpression("YOUR_POINTBERRY_INVENTORY_ID", true);
     }
 
     @Override
