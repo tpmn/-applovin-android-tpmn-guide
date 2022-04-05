@@ -404,7 +404,6 @@ public class RewardedAdActivity extends Activity implements MaxRewardedAdListene
         rewardedAd.loadAd();
     }
 }
-
 ```
 
 ### 보상형 광고 게재
@@ -416,6 +415,24 @@ if (rewardedAd.isReady()) {
     rewardedAd.showAd("YOUR_POINTBERRY_INVENTORY_ID");
 }
 ```
+
+## 체크리스트
+
+- [x] 광고가 노출되나요?
+
+  광고가 노출되지 않는다면 MAX SDK를 점검하세요.
+
+- [x] 광고 노출이 로깅되나요?
+
+  `logImpression("YOUR_POINTBERRY_INVENTORY_ID", true)`을 호출하면 다음과 같은 로그 메시지가 출력되어야 합니다.
+
+  _Successfully logged ad impression for inventory ID P_148 and advertising ID a1312407-a27a-4a2e-a52f-0a0ab89febe1_
+
+  성공을 뜻하는 로그 메시지가 출력되지 않는다면, 즉 광고 노출이 로깅되지 않는다면 PointBerry Event Tracker를 점검하세요.
+
+- [x] 앱 출시 전에, 광고 노출 로깅에 관한 로그 메시지가 출력되지 않도록 했나요?
+
+  출시 버전에서는 `logImpression("YOUR_POINTBERRY_INVENTORY_ID")` 또는 `logImpression("YOUR_POINTBERRY_INVENTORY_ID", false)`을 호출하세요.
 
 ## 데모 앱
 
