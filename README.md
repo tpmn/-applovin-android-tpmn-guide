@@ -19,7 +19,6 @@ AppLovin MAX SDK와 [AdMob 어댑터](https://github.com/AppLovin/AppLovin-MAX-S
 repositories {
     google()
     mavenCentral()
-    jcenter()
     maven { url 'https://jitpack.io' }
 }
 
