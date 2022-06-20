@@ -25,6 +25,15 @@ repositories {
 dependencies {
     // AppLovin MAX SDK
     implementation 'com.applovin:applovin-sdk:11.3.1'
+    
+    // Adcolony SDK 
+    implementation 'com.adcolony:sdk:4.8.0'
+
+    // Vungle SDK
+    implementation 'com.vungle:publisher-sdk-android:6.11.0'
+
+    // Meta SDK
+    implementation 'com.facebook.android:audience-network-sdk:6.+'
 
     // AdMob-to-MAX adapter
     implementation 'com.applovin.mediation:google-adapter:20.6.0.3'
