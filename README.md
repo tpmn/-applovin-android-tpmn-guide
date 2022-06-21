@@ -26,14 +26,14 @@ dependencies {
     // AppLovin MAX SDK
     implementation 'com.applovin:applovin-sdk:11.3.1'
     
-    // ironsource SDK 
-    implementation 'com.ironsource.sdk:mediationsdk:7.2.2.1' 
-
-    // Vungle SDK
-    implementation 'com.vungle:publisher-sdk-android:6.11.0'
-
     // Meta SDK
-    implementation 'com.facebook.android:audience-network-sdk:6.+'
+    implementation 'com.applovin.mediation:facebook-adapter:+'
+  
+    // Vungle SDK
+    implementation 'com.applovin.mediation:vungle-adapter:+'
+
+    // ironsource SDK 
+    implementation 'com.applovin.mediation:ironsource-adapter:+'
 
     // AdMob-to-MAX adapter
     implementation 'com.applovin.mediation:google-adapter:20.6.0.3'
