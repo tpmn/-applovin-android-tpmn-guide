@@ -27,8 +27,9 @@ dependencies {
     implementation 'com.applovin:applovin-sdk:11.3.1'
     
     // Meta SDK
-    implementation 'com.applovin.mediation:facebook-adapter:6.11.0.2'
-  
+    implementation 'com.applovin.mediation:facebook-adapter:6.11.0.2'    
+    implementation 'com.facebook.android:audience-network-sdk:6.11.0'
+
     // Vungle SDK
     implementation 'com.applovin.mediation:vungle-adapter:6.11.0.1'
 
