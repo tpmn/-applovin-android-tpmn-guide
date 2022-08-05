@@ -32,15 +32,12 @@ dependencies {
 
     // Vungle SDK
     implementation 'com.applovin.mediation:vungle-adapter:6.11.0.1'
-
-    // ironsource SDK 
-    implementation 'com.applovin.mediation:ironsource-adapter:7.2.2.1.0'
-
+    
     // AdMob-to-MAX adapter
     implementation 'com.applovin.mediation:google-adapter:20.6.0.3'
 
     // Unity-Ads-to-MAX adapter
-    implementation 'com.applovin.mediation:unityads-adapter:4.0.1.1'
+    implementation 'com.applovin.mediation:unityads-adapter:4.3.0.0'
 
     // Android Advertising ID (AAID)
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
