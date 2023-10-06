@@ -1,4 +1,4 @@
-# AppLovin MAX Android SDK 연동 가이드
+# 1. AppLovin MAX Android SDK 연동 가이드
 
 ## 시작하기
 
@@ -424,7 +424,9 @@ if (rewardedAd.isReady()) {
 ```
 
 
-# PUBMATIC MAX Android SDK 연동 가이드
+
+
+# 2. PUBMATIC MAX Android SDK 연동 가이드
 
 ## 시작하기
 
@@ -434,7 +436,7 @@ PUBMATIC SDK 연동은 Prebid를 기반으로 한 광고 효율 최적화 방식
 
 https://github.com/PubMatic/android-openwrap-sdk-samples
 
-가. 그래들 안에 추가할 내용 ( build.gradle 에 추가. )
+### 가. 그래들 안에 추가할 내용 ( build.gradle 에 추가. )
 
     // To integrate OpenWrap SDK
     implementation 'com.pubmatic.sdk:openwrap:3.0.0'
@@ -445,19 +447,21 @@ https://github.com/PubMatic/android-openwrap-sdk-samples
 ### 나. 매니페스트 추가
 
 
-<!--
-    Mandatory permission for OpenWrap SDK
-   -->
+```xml
 
+<!-- Mandatory permission for OpenWrap SDK -->
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<!--
-  Ask this permission to user (at runtime from code) only for API 30+
--->
+
+<!--  Ask this permission to user (at runtime from code) only for API 30+ -->
+
 <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+```
 
 
 ### 다. 매니페스트 사용을 위한 허용 요청
+
 
 private void Permission() {
     // Runtime optional permission list
