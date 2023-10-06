@@ -423,7 +423,397 @@ if (rewardedAd.isReady()) {
 }
 ```
 
-## 체크리스트
+
+# PUBMATIC MAX Android SDK 연동 가이드
+
+## 시작하기
+
+PUBMATIC SDK 연동은 Prebid를 기반으로 한 광고 효율 최적화 방식으로 2023.11월(예정) 실 서비스 시작시 앱 별 집행 코드를 별도 전달할 예정이며, 이를 위해 사전 앱 내 설정을 권장합니다.
+
+### 가. PUBMATIC SDK Github 주소
+
+https://github.com/PubMatic/android-openwrap-sdk-samples
+
+가. 그래들 안에 추가할 내용 ( build.gradle 에 추가. )
+
+    // To integrate OpenWrap SDK
+    implementation 'com.pubmatic.sdk:openwrap:3.0.0'
+    // To integrate GAM event handler
+    implementation 'com.pubmatic.sdk:openwrap-eventhandler-dfp:3.0.0'
+
+
+### 나. 매니페스트 추가
+
+
+<!--
+    Mandatory permission for OpenWrap SDK
+   -->
+
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<!--
+  Ask this permission to user (at runtime from code) only for API 30+
+-->
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+
+### 다. 매니페스트 사용을 위한 허용 요청
+
+private void Permission() {
+    // Runtime optional permission list
+    List<String> permissionList = new ArrayList<>();
+    permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+    permissionList.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+    permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    // Access READ_PHONE_STATE permission if api level 30 and above
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        permissionList.add(Manifest.permission.READ_PHONE_STATE);
+    }
+
+    final String[] PERMISSIONS = new String[permissionList.size()];
+    permissionList.toArray(PERMISSIONS);
+    // Ask permission from user for location and write external storage
+    if (!hasPermissions(this, PERMISSIONS)) {
+        int MULTIPLE_PERMISSIONS_REQUEST_CODE = 123;
+        ActivityCompat.requestPermissions(this, PERMISSIONS, MULTIPLE_PERMISSIONS_REQUEST_CODE);
+    }
+}
+
+
+private static boolean hasPermissions(Context context, String... permissions) {
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+        for (String permission : permissions) {
+            if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
+
+### 라. PUBMATIC 배너 뷰를 위한 정의 
+
+
+pubmatic Banner View
+
+   <com.pubmatic.sdk.openwrap.banner.POBBannerView
+            android:id="@+id/banner"
+            android:layout_width="320dp" // android:layout_width="300dp" 
+            android:layout_height="50dp" // android:layout_height="250dp"
+ />
+
+
+### 마. PUBMATIC 인터스티셜 뷰를 위한 정의 
+
+
+ // 아래 값들 중 코드 및 유닛 값은 임의 사항으로 실 반영시 별도 제공 예정
+
+
+ // Interstitial
+    void DFPInterstitial() {
+
+        // Create an interstitial custom event handler for your ad server. Make sure
+        // you use separate event handler objects to create each interstitial ad instance.
+        // For example, The code below creates an event handler for DFP ad server.
+        DFPInterstitialEventHandler eventHandler = new DFPInterstitialEventHandler(this, DFP_AD_UNIT_ID_Interstitial);
+
+        // Create  interstitial instance by passing activity context and
+        interstitial = new POBInterstitial(this,
+                "YOUR_PUB_ID_Interstitial",                    // publisherId
+                "YOUR_PROFILE_ID_Interstitial",                // profileId
+                "YOUR_OPENWRAP_AD_UNIT_ONE_Interstitial",      // adUnitId
+                eventHandler);
+
+        // Set Optional listener
+        interstitial.setListener(new POBInterstitialListener());
+
+
+    }
+
+// To show interstitial ad call this method
+     
+    private void showInterstitialAd() {
+        // check if the interstitial is ready
+        if (null != interstitial && interstitial.isReady()) {
+            // Call show on interstitial
+            interstitial.show();
+        }
+    }
+
+// Interstitial Ad listener callbacks
+    class POBInterstitialListener extends POBInterstitial.POBInterstitialListener {
+        private final String TAG = "tpmn";
+
+        // Callback method notifies that an ad has been received successfully.
+        @Override
+        public void onAdReceived(@NonNull POBInterstitial ad) {
+            Log.d(TAG, "onAdReceived Interstitial");
+            //Method gets called when ad gets loaded in container
+            //Here, you can show interstitial ad to user
+            btnInterstitial.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        }
+
+        // Callback method notifies an error encountered while loading an ad.
+        @Override
+        public void onAdFailedToLoad(@NonNull POBInterstitial ad, @NonNull POBError error) {
+            Log.e(TAG, "onAdFailedToLoad Interstitial : Ad failed to load with error -" + error.toString());
+            //Method gets called when loadAd fails to load ad
+            //Here, you can put logger and see why ad failed to load
+        }
+
+        // Callback method notifies an error encountered while showing an ad.
+        @Override
+        public void onAdFailedToShow(@NonNull POBInterstitial ad, @NonNull POBError error) {
+            Log.e(TAG, "onAdFailedToShow Interstitial : Ad failed to show with error -" + error.toString());
+            //Method gets called when loadAd fails to show ad
+            //Here, you can put logger and see why ad failed to show
+        }
+
+        // Callback method notifies that a user interaction will open another app (for example, App Store), leaving the current app.
+        @Override
+        public void onAppLeaving(@NonNull POBInterstitial ad) {
+            Log.d(TAG, "onAppLeaving");
+        }
+
+        // Callback method notifies that the interstitial ad will be presented as a modal on top of the current view controller
+        @Override
+        public void onAdOpened(@NonNull POBInterstitial ad) {
+            Log.d(TAG, "onAdOpened Interstitial");
+        }
+
+        // Callback method notifies that the interstitial ad has been animated off the screen.
+        @Override
+        public void onAdClosed(@NonNull POBInterstitial ad) {
+            Log.d(TAG, "onAdClosed Interstitial");
+            btnInterstitial.setBackgroundColor(Color.GRAY);
+
+        }
+
+        // Callback method notifies ad click
+        @Override
+        public void onAdClicked(@NonNull POBInterstitial ad) {
+            Log.d(TAG, "onAdClicked");
+        }
+    }
+
+### 바. PUBMATIC 리워드 뷰를 위한 정의 
+
+// Rewarded
+    void DFPRewarded() {
+    
+
+        // Create an rewarded custom event handler for your ad server. Make sure
+        // you use separate event handler objects to create each rewarded ad instance.
+        // For example, The code below creates an event handler for DFP ad server.
+        DFPRewardedEventHandler eventHandler = new DFPRewardedEventHandler(this, "YOUR_DFP_AD_UNIT_ID_Rewarded");
+
+        //Create POBRewardedAd instance by passing activity context and profile parameters
+        rewarded = POBRewardedAd.getRewardedAd(this,
+                "YOUR_PUB_ID_Rewarded",
+                "YOUR_PROFILE_ID_Rewarded",
+                "YOUR_OPENWRAP_AD_UNIT_ID_Rewarded",
+                eventHandler
+        );
+
+        //Set Optional Callback Listener
+        rewarded.setListener(new POBRewardedAdListenerImpl());
+
+    }
+
+// To show Rewarded Ad Call this method
+
+    private void showRewardedAd() {
+        //Call showAd when Ad is ready
+        if (rewarded != null && rewarded.isReady()) {
+            rewarded.show();
+        }
+    }
+
+
+// Rewarded Ad listener callbacks
+    class POBRewardedAdListenerImpl extends POBRewardedAd.POBRewardedAdListener {
+        private final String TAG = "tpmn";
+
+        // Callback method notifies that an ad has been received successfully.
+        @Override
+        public void onAdReceived(@NonNull POBRewardedAd ad) {
+            Log.d(TAG, "Rewarded: onAdReceived : " + ad);
+            //Method gets called when ad gets loaded in container
+            //Here, you can show Rewarded ad to user
+            btnRewarded.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        }
+
+        // Callback method notifies an error encountered while loading an ad.
+        @Override
+        public void onAdFailedToLoad(@NonNull POBRewardedAd ad, @NonNull POBError error) {
+            Log.d(TAG, "Rewarded : onAdFailedToLoad");
+            Log.e(TAG, "Ad failed with load error - " + error.toString());
+            //Method gets called when sdk fails to load ad
+            //Here, you can put logger and see why ad failed to load
+        }
+
+        // Callback method notifies an error encountered while rendering an ad.
+        @Override
+        public void onAdFailedToShow(@NonNull POBRewardedAd ad, @NonNull POBError error) {
+            Log.e(TAG, "Rewarded : onAdFailedToShow");
+            Log.e(TAG, "Ad failed with show error - " + error.toString());
+            //Method gets called when sdk fails to show ad
+            //Here, you can put logger and see why ad failed to show
+        }
+
+
+        // Callback method notifies that a user interaction will open another app (for example, App Store), leaving the current app.
+        @Override
+        public void onAppLeaving(@NonNull POBRewardedAd ad) {
+            Log.d(TAG, "Rewarded : onAppLeaving");
+        }
+
+        // Callback method notifies that the rewarded ad will be presented as a modal on top of the current view controller
+        @Override
+        public void onAdOpened(@NonNull POBRewardedAd ad) {
+            Log.d(TAG, "Rewarded : onAdOpened");
+        }
+
+        // Callback method notifies that the rewarded ad has been animated off the screen.
+        @Override
+        public void onAdClosed(@NonNull POBRewardedAd ad) {
+            Log.d(TAG, "Rewarded : onAdClosed");
+            btnRewarded.setBackgroundColor(Color.GRAY);
+        }
+
+        // Callback method notifies ad click
+        @Override
+        public void onAdClicked(@NonNull POBRewardedAd ad) {
+            Log.d(TAG, "Rewarded : onAdClicked");
+        }
+
+        @Override
+        public void onReceiveReward(@NonNull POBRewardedAd ad, @NonNull POBReward reward) {
+            // As this is callback method, No action Required
+            Log.d(TAG, "Rewarded : Ad should Reward -" + reward.getAmount() + "(" + reward.getCurrencyType() + ")");
+            Toast.makeText(getApplicationContext(), "Congratulation! You are rewarded with " + reward.getAmount() + " " + reward.getCurrencyType(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+### 사. PUBMATIC 배너(320x50) 뷰를 위한 정의 
+
+
+// Banner
+    private void POBView() {
+
+        try {
+
+            // Initialize banner view
+            banner = findViewById(R.id.banner);
+
+            // Call init() to set tag information
+            // For test IDs see - https://community.pubmatic.com/display/AOPO/Test+and+debug+your+integration#Testanddebugyourintegration-Testprofile/placement
+
+            
+            // Create a banner custom event handler for your ad server. Make sure you use
+            // separate event handler objects to create each banner view.
+            // For example, The code below creates an event handler for DFP ad server.
+            DFPBannerEventHandler eventHandler = new DFPBannerEventHandler(this, AdUnit, AdSize.BANNER);
+
+            // Initialise banner view
+            banner = findViewById(R.id.banner);
+            banner.init("YOUR_PublisherId",
+                    "YOUR_ProfileId",
+                    "YOUR_AdUnit",
+                    eventHandler);
+
+            //optional listener to listen banner events
+            banner.setListener(new POBBannerViewListener());
+
+            // Call loadAd() on banner instance
+            banner.loadAd();
+
+ 
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("tpmn", "Exception  e : " + e.getMessage());
+        }
+    }
+
+
+### 아. PUBMATIC 배너(MREC:300x250) 뷰를 위한 정의 
+
+// Banner 
+    void BannerVideo() {
+
+
+        // Create a banner custom event handler for your ad server. Make sure you use
+        // separate event handler objects to create each banner view.
+        // For example, The code below creates an event handler for DFP ad server with adsize medium rectangle i.e 300x250.
+        DFPBannerEventHandler eventHandler = new DFPBannerEventHandler(this, "YOUR_DFP_AD_UNIT_ID_BV", AdSize.MEDIUM_RECTANGLE);
+
+        // Initialise banner view
+        bannerVideo = findViewById(R.id.bannerVideo);
+        bannerVideo.init("YOUR_PUB_ID_BV",
+                "YOUR_PROFILE_ID_BV",
+                "YOUR_OPENWRAP_AD_UNIT_ID_BV",
+                eventHandler);
+ 
+
+        //optional listener to listen banner events
+        bannerVideo.setListener(new POBBannerViewListener());
+
+        // Call loadAd() on banner instance
+        bannerVideo.loadAd();
+    }
+
+
+// Banner Ad listener callbacks
+
+    class POBBannerViewListener extends POBBannerView.POBBannerViewListener {
+        private final String TAG = "tpmn";
+
+        // Callback method Notifies that an ad has been successfully loaded and rendered.
+        @Override
+        public void onAdReceived(@NonNull POBBannerView view) {
+            Log.d(TAG, "Ad Received");
+        }
+
+        // Callback method Notifies an error encountered while loading or rendering an ad.
+        @Override
+        public void onAdFailed(@NonNull POBBannerView view, @NonNull POBError error) {
+            Log.e(TAG, "onAdFailed : " + error.toString());
+        }
+
+        // Callback method Notifies whenever current app goes in the background due to user click
+        @Override
+        public void onAppLeaving(@NonNull POBBannerView view) {
+            Log.d(TAG, "App Leaving");
+        }
+
+        // Callback method Notifies that the banner ad view is clicked.
+        @Override
+        public void onAdClicked(@NonNull POBBannerView view) {
+            Log.d(TAG, "Ad Clicked");
+        }
+
+        // Callback method Notifies that the banner ad view will launch a dialog on top of the current view
+        @Override
+        public void onAdOpened(@NonNull POBBannerView view) {
+            Log.d(TAG, "Ad Opened");
+        }
+
+        // Callback method Notifies that the banner ad view has dismissed the modal on top of the current view
+        @Override
+        public void onAdClosed(@NonNull POBBannerView view) {
+            Log.d(TAG, "Ad Closed");
+        }
+    }
+
+
+
+
+
+
+# 체크리스트
 
 - [x] 광고가 노출되나요?
 
