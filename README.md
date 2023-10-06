@@ -462,7 +462,7 @@ https://github.com/PubMatic/android-openwrap-sdk-samples
 
 ### 다. 매니페스트 사용을 위한 허용 요청
 
-
+```xml
 private void Permission() {
     // Runtime optional permission list
     List<String> permissionList = new ArrayList<>();
@@ -495,10 +495,11 @@ private static boolean hasPermissions(Context context, String... permissions) {
     return true;
 }
 
-
+```
 
 ### 라. PUBMATIC 배너 뷰를 위한 정의 
 
+```xml
 
 pubmatic Banner View
 
@@ -508,12 +509,14 @@ pubmatic Banner View
             android:layout_height="50dp" // android:layout_height="250dp"
  />
 
+```
 
 ### 마. PUBMATIC 인터스티셜 뷰를 위한 정의 
 
 
  // 아래 값들 중 코드 및 유닛 값은 임의 사항으로 실 반영시 별도 제공 예정
 
+```xml
 
  // Interstitial
     void DFPInterstitial() {
@@ -603,7 +606,11 @@ pubmatic Banner View
         }
     }
 
+```
+
 ### 바. PUBMATIC 리워드 뷰를 위한 정의 
+
+```xml
 
 // Rewarded
     void DFPRewarded() {
@@ -702,8 +709,11 @@ pubmatic Banner View
         }
     }
 
+```
+
 ### 사. PUBMATIC 배너(320x50) 뷰를 위한 정의 
 
+```xml
 
 // Banner
     private void POBView() {
@@ -742,8 +752,11 @@ pubmatic Banner View
         }
     }
 
+```
 
 ### 아. PUBMATIC 배너(MREC:300x250) 뷰를 위한 정의 
+
+```xml
 
 // Banner 
     void BannerVideo() {
@@ -813,7 +826,7 @@ pubmatic Banner View
     }
 
 
-
+```
 
 
 
